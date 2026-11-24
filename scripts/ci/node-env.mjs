@@ -8,7 +8,9 @@ if (!command) {
 }
 
 const nodeExecutable = process.execPath;
-const nodeDir = path.dirname(nodeExecutable);
+const nodeDir = process.platform === 'win32'
+  ? path.dirname(nodeExecutable)
+  : path.dirname(path.dirname(nodeExecutable));
 
 const isNpm = command === 'npm';
 const npmCli = path.join(nodeDir, 'node_modules', 'npm', 'bin', 'npm-cli.js');
