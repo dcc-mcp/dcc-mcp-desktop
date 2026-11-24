@@ -1,24 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="176" viewBox="0 0 720 176" role="img" aria-labelledby="title desc">
   <title id="title">DCC-MCP Desktop</title>
   <desc id="desc">DCC-MCP Desktop horizontal web lockup.</desc>
-  <g transform="translate(8 8) scale(0.625)">
+  <g transform="translate(8 8) scale(0.625)" shape-rendering="geometricPrecision">
     <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
     <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
-    <g fill="#16B9E6">
-      <rect x="40" y="112" width="14" height="14" rx="2"/>
-      <rect x="54" y="94" width="13" height="13" rx="2"/>
-      <rect x="54" y="130" width="13" height="13" rx="2"/>
-      <rect x="67" y="108" width="18" height="18" rx="2" fill="#ECECEF"/>
-    </g>
-    <rect x="54" y="148" width="13" height="13" rx="2" fill="#149C9C"/>
-    <path d="M72 70H106C133 70 151 88 151 113C151 124 147 133 140 140C147 148 151 157 151 167C151 180 135 186 107 186H72V70Z" fill="#16B9E6"/>
-    <path d="M98 101H107C119 101 126 108 126 118C126 128 119 135 107 135H98V101Z" fill="#0B1F45"/>
-    <path d="M72 128H98V155H107C119 155 126 148 126 138C126 136 126 134 125 132C135 134 143 140 147 148C150 153 151 159 151 167C151 180 135 186 107 186H72V128Z" fill="#0A74DA"/>
-    <path d="M133 112C143 94 162 87 180 92C202 98 214 119 207 141C201 162 180 174 160 168C147 165 138 157 133 147" fill="none" stroke="#16B9E6" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M133 147C143 163 160 170 177 166C187 164 195 158 201 149" fill="none" stroke="#0A74DA" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M190 82L221 100V156L190 174L159 156V100Z" fill="#0B1F45" stroke="#16B9E6" stroke-width="8" stroke-linejoin="round"/>
-    <path d="M190 111L205 120V136L190 145L175 136V120Z" fill="#ECECEF" stroke="#0B1F45" stroke-width="5" stroke-linejoin="round"/>
-    <circle cx="190" cy="128" r="5" fill="#149C9C"/>
+    <rect x="33" y="118" width="11" height="11" rx="2" fill="#16B9E6"/>
+    <rect x="46" y="101" width="10" height="10" rx="2" fill="#16B9E6"/>
+    <rect x="46" y="135" width="10" height="10" rx="2" fill="#149C9C"/>
+    <rect x="59" y="117" width="16" height="16" rx="2" fill="#ECECEF"/>
+    <text x="47" y="151" fill="#ECECEF" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">D</text>
+    <text x="82" y="151" fill="#16B9E6" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">C</text>
+    <text x="118" y="151" fill="#0A74DA" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">C</text>
+    <path d="M153 128H170" fill="none" stroke="#149C9C" stroke-width="5" stroke-linecap="round"/>
+    <path d="M198 75L225 91V165L198 181L171 165V91Z" fill="#0B1F45" stroke="#16B9E6" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M198 111L211 119V137L198 145L185 137V119Z" fill="#ECECEF" stroke="#0B1F45" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="198" cy="128" r="4" fill="#149C9C"/>
   </g>
   <g font-family="Instrument Sans, Atkinson Hyperlegible Next, Arial, sans-serif">
     <text x="188" y="88" fill="#0B1F45" font-size="54" font-weight="700" letter-spacing="-2">DCC-MCP</text>

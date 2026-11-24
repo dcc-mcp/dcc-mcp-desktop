@@ -1,25 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc" data-capability-motif="dcc-flow-and-mcp-gateway">
   <title id="title">DCC-MCP Desktop</title>
-  <desc id="desc">A pixel-fed DCC flow enters an MCP gateway hexagon inside a dark circular desktop badge.</desc>
-  <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
-  <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
+  <desc id="desc">A layered DCC ribbon flows into an MCP gateway hexagon inside a circular desktop badge.</desc>
+  <defs>
+    <radialGradient id="badge" cx="34%" cy="25%" r="86%">
+      <stop offset="0" stop-color="#0B2C5C"/>
+      <stop offset="1" stop-color="#061735"/>
+    </radialGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="0.9">
+      <stop offset="0" stop-color="#25D7C4"/>
+      <stop offset="1" stop-color="#16B9E6"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0.8">
+      <stop offset="0" stop-color="#2AE1F4"/>
+      <stop offset="1" stop-color="#12A8DD"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0.8">
+      <stop offset="0" stop-color="#1179E8"/>
+      <stop offset="1" stop-color="#1458C8"/>
+    </linearGradient>
+  </defs>
 
-  <g fill="#16B9E6">
-    <rect x="40" y="112" width="14" height="14" rx="2"/>
-    <rect x="54" y="94" width="13" height="13" rx="2"/>
-    <rect x="54" y="130" width="13" height="13" rx="2"/>
-    <rect x="67" y="108" width="18" height="18" rx="2" fill="#ECECEF"/>
+  <circle cx="128" cy="128" r="112" fill="url(#badge)"/>
+  <circle cx="128" cy="128" r="112" fill="none" stroke="#173B73" stroke-width="2"/>
+
+  <g shape-rendering="geometricPrecision">
+    <rect x="35" y="125" width="11" height="11" rx="1" fill="#ECECEF"/>
+    <rect x="48" y="108" width="11" height="11" rx="1" fill="#ECECEF"/>
+    <rect x="48" y="142" width="11" height="11" rx="1" fill="#16B9E6"/>
+    <rect x="62" y="124" width="20" height="20" rx="2" fill="#16B9E6"/>
+    <rect x="49" y="159" width="11" height="11" rx="1" fill="#ECECEF"/>
+
+    <path d="M62 64H139C172 64 194 85 194 115C194 130 189 141 179 151H146C156 141 161 129 161 116C161 101 150 92 134 92H95V113H134C151 113 161 123 161 137C161 148 155 156 145 161H95V192H62V64Z" fill="url(#teal)"/>
+    <path d="M95 92H134C151 92 161 101 161 116C161 129 156 141 146 151H112C121 141 126 130 126 118C126 109 120 103 110 103H95V92Z" fill="#061735"/>
+    <path d="M62 114H95V133H134C151 133 161 143 161 157C161 171 151 181 134 181H95V192H62V114Z" fill="url(#blue)"/>
+
+    <path d="M128 113C140 91 165 86 184 98C203 110 208 134 196 151C184 169 157 173 140 158C133 152 129 145 127 138" fill="none" stroke="url(#cyan)" stroke-width="28" stroke-linecap="round"/>
+    <path d="M127 138C131 151 139 160 151 165C165 171 182 166 192 155" fill="none" stroke="url(#blue)" stroke-width="28" stroke-linecap="round"/>
+
+    <path d="M188 82L220 100V158L188 177L157 158V100Z" fill="#061735" stroke="url(#cyan)" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M188 111L203 120V137L188 146L173 137V120Z" fill="#ECECEF"/>
   </g>
-  <rect x="54" y="148" width="13" height="13" rx="2" fill="#149C9C"/>
-
-  <path d="M72 70H106C133 70 151 88 151 113C151 124 147 133 140 140C147 148 151 157 151 167C151 180 135 186 107 186H72V70Z" fill="#16B9E6"/>
-  <path d="M98 101H107C119 101 126 108 126 118C126 128 119 135 107 135H98V101Z" fill="#0B1F45"/>
-  <path d="M72 128H98V155H107C119 155 126 148 126 138C126 136 126 134 125 132C135 134 143 140 147 148C150 153 151 159 151 167C151 180 135 186 107 186H72V128Z" fill="#0A74DA"/>
-
-  <path d="M133 112C143 94 162 87 180 92C202 98 214 119 207 141C201 162 180 174 160 168C147 165 138 157 133 147" fill="none" stroke="#16B9E6" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M133 147C143 163 160 170 177 166C187 164 195 158 201 149" fill="none" stroke="#0A74DA" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <path d="M190 82L221 100V156L190 174L159 156V100Z" fill="#0B1F45" stroke="#16B9E6" stroke-width="8" stroke-linejoin="round"/>
-  <path d="M190 111L205 120V136L190 145L175 136V120Z" fill="#ECECEF" stroke="#0B1F45" stroke-width="5" stroke-linejoin="round"/>
-  <circle cx="190" cy="128" r="5" fill="#149C9C"/>
 </svg>

@@ -58,11 +58,11 @@ build: build-frontend check-rust
 
 validate target="x86_64-unknown-linux-gnu": build-frontend lint test check-rust
 
-desktop-smoke target:
+desktop-smoke target: install
     just fetch-sidecars {{target}}
     vx node node_modules/@tauri-apps/cli/tauri.js build --target {{target}} --no-bundle
 
-desktop-bundle target bundles:
+desktop-bundle target bundles: install
     just fetch-sidecars {{target}}
     vx node node_modules/@tauri-apps/cli/tauri.js build --target {{target}} --bundles {{bundles}}
 
