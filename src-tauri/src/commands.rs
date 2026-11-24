@@ -1,17 +1,17 @@
+use std::sync::Arc;
+
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter, Runtime};
+use tauri::Wry;
+use tauri::{AppHandle, Emitter, Runtime, State};
 
 use crate::provisioner::{agents, dcc_bridges, marketplace};
-use crate::sidecar;
+use crate::sidecar::{self, SidecarLog, SidecarManager, SidecarStatus};
 use crate::tray;
 
 #[derive(Debug, Clone, Serialize)]
-pub struct GatewayStatus {
-    pub status: String,
-    pub version: String,
-    pub listen_mode: String,
-    pub address: String,
-    pub uptime_seconds: u64,
+pub struct GatewayRuntimeStatus {
+    pub sidecar: SidecarStatus,
+    pub health: sidecar::GatewayHealth,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -34,19 +34,44 @@ pub struct ProvisionResult {
 }
 
 #[tauri::command]
-pub fn get_gateway_status() -> GatewayStatus {
-    let online = sidecar::gateway_is_reachable();
-    GatewayStatus {
-        status: if online { "ok" } else { "offline" }.to_string(),
-        version: if online { "detected" } else { "phase-1-mock" }.to_string(),
-        listen_mode: "loopback".to_string(),
-        address: format!(
-            "{}:{}",
-            sidecar::DEFAULT_GATEWAY_HOST,
-            sidecar::DEFAULT_GATEWAY_PORT
-        ),
-        uptime_seconds: 0,
+pub fn get_gateway_status(manager: State<'_, Arc<SidecarManager<Wry>>>) -> GatewayRuntimeStatus {
+    let reachable = sidecar::gateway_is_reachable();
+    GatewayRuntimeStatus {
+        sidecar: manager.status(),
+        health: sidecar::GatewayHealth {
+            reachable,
+            status: if reachable {
+                "ok".to_string()
+            } else {
+                "offline".to_string()
+            },
+            version: None,
+        },
     }
+}
+
+#[tauri::command]
+pub fn get_gateway_logs(manager: State<'_, Arc<SidecarManager<Wry>>>) -> Vec<SidecarLog> {
+    manager.logs()
+}
+
+#[tauri::command]
+pub fn start_gateway(
+    manager: State<'_, Arc<SidecarManager<Wry>>>,
+) -> Result<SidecarStatus, String> {
+    manager.start()
+}
+
+#[tauri::command]
+pub fn stop_gateway(manager: State<'_, Arc<SidecarManager<Wry>>>) -> SidecarStatus {
+    manager.stop()
+}
+
+#[tauri::command]
+pub fn restart_gateway(
+    manager: State<'_, Arc<SidecarManager<Wry>>>,
+) -> Result<SidecarStatus, String> {
+    manager.restart()
 }
 
 #[tauri::command]

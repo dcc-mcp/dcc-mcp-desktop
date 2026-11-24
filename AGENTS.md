@@ -9,8 +9,8 @@ This repository is the Tauri v2 desktop control plane for `dcc-mcp`.
 - Keep DCC identity parameterized. Do not add Maya-only assumptions to shared code.
 - Treat provisioning as a backup-first operation. Only remove entries owned by this application.
 - Keep source code, identifiers, comments, and commit messages in English. User-facing UI copy may follow the product language defined in the PRD.
-- Git commits use `loonghao <hal.long@outlook.com>` and the format `<type>: <message>`.
+- Git commits use the format `<type>: <message>` and the repository identity required by the project owner.
 
 ## Validation
 
-Run `npm run build` for the frontend and `cargo check --manifest-path src-tauri/Cargo.toml` for the Rust shell when the local toolchain is available.
+Use the `vx` + `just` ecosystem as the single source of truth for local and CI tasks. Run `vx just validate` for the complete local gate. `vx.toml` declares tool versions only; all recipes live in the lowercase `justfile`.

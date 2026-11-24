@@ -1,30 +1,48 @@
 # dcc-mcp-desktop
 
+![dcc-mcp Desktop banner](docs/assets/dcc-mcp-desktop.svg)
+
 Cross-platform desktop control plane for the `dcc-mcp` gateway. The client uses Tauri v2, React, TypeScript, and a Rust shell for tray behavior, gateway lifecycle, and local provisioning.
 
-## Current scope
+## Brand assets
 
-Phase 1 is implemented as a working UI shell.
-
-- Main window based on the existing `gateway_center.tsx` prototype.
-- Independent 380 × 540 tray window with routing graph and live call stream.
-- Tray window follows Magpie's quick-panel behavior. It anchors beside the tray icon, chooses a top or bottom opening direction, hides on focus loss, and uses short CSS panel transitions.
-- Mock lifecycle events for `connected`, `running`, `failed`, and `completed`.
-- Typed gateway, agent, and marketplace contracts.
-- HTTP/SSE client with bounded exponential reconnect.
-- Rust command surface for gateway status, profiles, agent provisioning, DCC bridge discovery, marketplace sources, and window control.
+- [Desktop mark](public/branding/dcc-mcp-desktop-mark.svg) for the app icon, favicon, and avatar surfaces.
+- [Light web lockup](public/branding/dcc-mcp-desktop-lockup.svg) and [dark web lockup](public/branding/dcc-mcp-desktop-lockup-dark.svg) for product headers.
+- [Social card](docs/assets/dcc-mcp-desktop-social.svg) for square social media posts.
 
 ## Development
 
+This repository uses `vx` for toolchain management and `just` as the single task runner:
+
 ```powershell
-npm install
-npm run tauri dev
+vx setup
+vx just dev
 ```
 
-The sidecar binaries are intentionally kept out of source control. Phase 2 will add platform-specific `dcc-mcp-gateway` and `dcc-mcp-cli` assets under `src-tauri/binaries/` and wire the lifecycle manager to them.
+Run `vx just --list` to see all available tasks.
 
-## Repository conventions
+## Release scope
 
-- Keep core code, identifiers, comments, and commit messages in English.
-- Use `loonghao <hal.long@outlook.com>` as the Git author.
-- Preserve third-party configuration with a `.bak` copy before provisioning changes.
+The first release is a Tauri v2 desktop shell around the real `dcc-mcp` gateway:
+
+- Bundled `dcc-mcp-server` and `dcc-mcp-cli` sidecars pinned by SHA-256 in `config/sidecars.json`.
+- Rust-owned gateway lifecycle with start, stop, restart, readiness probe, bounded logs, and exit cleanup.
+- An existing gateway on `127.0.0.1:9765` is adopted instead of being replaced.
+- Typed Tauri commands and a real HTTP/SSE client using the core gateway routes.
+- Main window, 380 × 540 tray quick panel, routing graph, and live call stream.
+- Windows NSIS/MSI, macOS DMG, and Linux AppImage/DEB release pipelines.
+
+The sidecar binaries are downloaded and verified by CI into `src-tauri/binaries/` before every desktop build. Local development can prepare them with the target-specific recipes listed by `vx just --list`.
+
+Supported targets are `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`, `x86_64-apple-darwin`, and `x86_64-unknown-linux-gnu`.
+
+## Validation
+
+```powershell
+vx just test
+vx just build
+vx just lint
+vx just check-versions
+```
+
+Installer builds require the native WebKitGTK and packaging dependencies listed in `.github/workflows/release.yml`.

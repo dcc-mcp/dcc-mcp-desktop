@@ -1,109 +1,105 @@
 import { create } from 'zustand';
-import type { GatewayCallEvent, LifecycleState } from '../types/gateway';
+import { localGatewayClient } from '../api/gatewayClient';
+import {
+  getGatewayStatus,
+  restartGateway,
+  startGateway,
+  stopGateway,
+} from '../api/tauriCommands';
+import type {
+  DccInstance,
+  GatewayCallEvent,
+  GatewayRuntimeStatus,
+  SidecarLog,
+  SidecarStatus,
+} from '../types/gateway';
 
-const now = () => new Date().toISOString();
-
-const seedEvents: GatewayCallEvent[] = [
-  {
-    event_type: 'call_completed',
-    trace_id: 'tr_8841c09',
-    timestamp: now(),
-    ingress: 'cli',
-    agent: { id: 'codex', display_name: 'Codex', raw_command: 'dccmcp exec blender bake_pbr' },
-    target: {
-      instance_id: 'blender-01',
-      dcc_app: 'blender',
-      protocol: 'python_socket',
-      scene_name: 'char_rig.blend',
-    },
-    skill_action: 'blender/bake_pbr',
-    status: 'completed',
-    duration_ms: 4200,
-    retry_count: 1,
-    artifact: {
-      id: 'art-101',
-      filename: 'char_rig_baked_2k.glb',
-      path: '/Projects/Aether/assets/char_rig_baked_2k.glb',
-    },
+const emptyStatus: GatewayRuntimeStatus = {
+  sidecar: {
+    state: 'stopped',
+    mode: 'stopped',
+    pid: null,
+    started_at: null,
+    last_error: null,
+    binary: 'dcc-mcp-server',
+    host: '127.0.0.1',
+    port: 9765,
   },
-  {
-    event_type: 'call_started',
-    trace_id: 'tr_8841b72',
-    timestamp: now(),
-    ingress: 'mcp',
-    agent: { id: 'claude-code', display_name: 'Claude Code' },
-    target: {
-      instance_id: 'maya-01',
-      dcc_app: 'maya',
-      protocol: 'command_port',
-      scene_name: 'lookdev.mb',
-    },
-    skill_action: 'maya/render_frame',
-    status: 'running',
-  },
-];
+  health: { reachable: false, status: 'offline', version: null },
+};
 
 interface GatewayStore {
-  lifecycleState: LifecycleState;
+  runtime: GatewayRuntimeStatus;
   events: GatewayCallEvent[];
-  gatewayOnline: boolean;
-  setLifecycleState: (state: LifecycleState) => void;
-  pushEvent: (event: GatewayCallEvent) => void;
-  setGatewayOnline: (online: boolean) => void;
-  startMockEvents: () => () => void;
+  instances: DccInstance[];
+  logs: SidecarLog[];
+  connectionError: string | null;
+  refreshGateway: () => Promise<void>;
+  connectGateway: () => () => void;
+  startGateway: () => Promise<void>;
+  stopGateway: () => Promise<void>;
+  restartGateway: () => Promise<void>;
+  setRuntime: (runtime: GatewayRuntimeStatus) => void;
+  setLog: (log: SidecarLog) => void;
 }
 
-const mockSequence: Array<Pick<GatewayCallEvent, 'status' | 'event_type'>> = [
-  { status: 'connected', event_type: 'instance_updated' },
-  { status: 'running', event_type: 'call_started' },
-  { status: 'completed', event_type: 'call_completed' },
-  { status: 'failed', event_type: 'call_failed' },
-];
+const message = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
-export const useGatewayStore = create<GatewayStore>((set, get) => ({
-  lifecycleState: 'connected',
-  events: seedEvents,
-  gatewayOnline: true,
-  setLifecycleState: (lifecycleState) => set({ lifecycleState }),
-  pushEvent: (event) =>
-    set((state) => ({
-      events: [event, ...state.events].slice(0, 40),
-      lifecycleState: event.status,
-    })),
-  setGatewayOnline: (gatewayOnline) => set({ gatewayOnline }),
-  startMockEvents: () => {
-    let sequenceIndex = 0;
-    const timer = window.setInterval(() => {
-      const step = mockSequence[sequenceIndex % mockSequence.length];
-      sequenceIndex += 1;
-      const status = step.status;
-      const event: GatewayCallEvent = {
-        event_type: step.event_type,
-        trace_id: `mock_${Date.now()}`,
-        timestamp: now(),
-        ingress: sequenceIndex % 2 === 0 ? 'mcp' : 'cli',
-        agent: {
-          id: sequenceIndex % 2 === 0 ? 'claude-code' : 'codex',
-          display_name: sequenceIndex % 2 === 0 ? 'Claude Code' : 'Codex',
-          raw_command: 'dccmcp exec blender export_glb',
-        },
-        target: {
-          instance_id: sequenceIndex % 2 === 0 ? 'maya-01' : 'blender-01',
-          dcc_app: sequenceIndex % 2 === 0 ? 'maya' : 'blender',
-          protocol: sequenceIndex % 2 === 0 ? 'command_port' : 'python_socket',
-          scene_name: sequenceIndex % 2 === 0 ? 'lookdev.mb' : 'char_rig.blend',
-        },
-        skill_action: sequenceIndex % 2 === 0 ? 'maya/render_frame' : 'blender/export_glb',
-        status,
-        duration_ms: status === 'completed' ? 4200 : undefined,
-        retry_count: status === 'failed' ? 2 : undefined,
-        error:
-          status === 'failed'
-            ? { code: 'BRIDGE_TIMEOUT', message: 'DCC bridge did not answer before the deadline.' }
-            : undefined,
-      };
-      get().pushEvent(event);
-    }, 3200);
-    return () => window.clearInterval(timer);
+export const useGatewayStore = create<GatewayStore>((set) => ({
+  runtime: emptyStatus,
+  events: [],
+  instances: [],
+  logs: [],
+  connectionError: null,
+  refreshGateway: async () => {
+    try {
+      const [runtime, instances, calls] = await Promise.all([
+        getGatewayStatus(),
+        localGatewayClient.getInstances(),
+        localGatewayClient.getCalls(),
+      ]);
+      set({ runtime, instances, events: calls, connectionError: null });
+    } catch (error) {
+      set({ connectionError: message(error) });
+    }
   },
+  connectGateway: () => {
+    const stopEvents = localGatewayClient.subscribe((event) => {
+      const call = event as unknown as GatewayCallEvent;
+      if (!call.trace_id) {
+        return;
+      }
+      set((state) => ({
+        events: [call, ...state.events].slice(0, 200),
+      }));
+    });
+    return stopEvents;
+  },
+  startGateway: async () => {
+    try {
+      await startGateway();
+      await useGatewayStore.getState().refreshGateway();
+    } catch (error) {
+      set({ connectionError: message(error) });
+    }
+  },
+  stopGateway: async () => {
+    try {
+      await stopGateway();
+      await useGatewayStore.getState().refreshGateway();
+    } catch (error) {
+      set({ connectionError: message(error) });
+    }
+  },
+  restartGateway: async () => {
+    try {
+      await restartGateway();
+      await useGatewayStore.getState().refreshGateway();
+    } catch (error) {
+      set({ connectionError: message(error) });
+    }
+  },
+  setRuntime: (runtime) => set({ runtime }),
+  setLog: (log) =>
+    set((state) => ({ logs: [...state.logs, log].slice(-200) })),
 }));

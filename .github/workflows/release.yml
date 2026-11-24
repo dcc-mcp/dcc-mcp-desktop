@@ -1,4 +1,4 @@
-name: release
+name: Release
 
 on:
   workflow_dispatch:
@@ -6,25 +6,96 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
+    name: Build (${{ matrix.platform }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: windows-latest
-            args: '--bundles nsis,msi'
-          - platform: macos-latest
-            args: '--bundles dmg'
-          - platform: ubuntu-22.04
-            args: '--bundles appimage,deb'
-    runs-on: ${{ matrix.platform }}
+          - os: windows-latest
+            platform: x86_64-pc-windows-msvc
+            bundles: nsis,msi
+            validation: win32
+          - os: macos-latest
+            platform: aarch64-apple-darwin
+            bundles: dmg
+            validation: darwin
+          - os: ubuntu-22.04
+            platform: x86_64-unknown-linux-gnu
+            bundles: appimage,deb
+            validation: linux
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: loonghao/vx@v0.9.34
         with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - name: Build Tauri bundle
-        run: npm run tauri build -- ${{ matrix.args }}
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
+      - name: Install Windows packaging tools
+        if: runner.os == 'Windows'
+        run: choco install wixtoolset -y --no-progress
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
+            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - name: Check version contract
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: vx node scripts/ci/check-version.mjs ${{ github.ref_name }}
+        shell: bash
+      - name: Build Tauri bundles
+        run: vx just desktop-bundle ${{ matrix.platform }} ${{ matrix.bundles }}
+      - name: Verify bundle outputs
+        run: vx just verify-bundle ${{ matrix.validation }} ${{ matrix.platform }}
+      - name: Hash release artifacts
+        shell: bash
+        run: |
+          find src-tauri/target/${{ matrix.platform }}/release/bundle -type f \
+            \( -iname '*.exe' -o -iname '*.msi' -o -iname '*.dmg' -o -iname '*.AppImage' -o -iname '*.deb' \) \
+            -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS-${{ matrix.platform }}.txt
+          cat SHA256SUMS-${{ matrix.platform }}.txt
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.platform }}
+          path: |
+            src-tauri/target/${{ matrix.platform }}/release/bundle/**/*.exe
+            src-tauri/target/${{ matrix.platform }}/release/bundle/**/*.msi
+            src-tauri/target/${{ matrix.platform }}/release/bundle/**/*.dmg
+            src-tauri/target/${{ matrix.platform }}/release/bundle/**/*.AppImage
+            src-tauri/target/${{ matrix.platform }}/release/bundle/**/*.deb
+            SHA256SUMS-${{ matrix.platform }}.txt
+          if-no-files-found: error
+
+  publish:
+    name: Publish release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+      - name: Validate aggregated artifacts
+        run: |
+          test "$(find release-artifacts -type f -name 'SHA256SUMS-*.txt' | wc -l)" -eq 3
+          test "$(find release-artifacts -type f \( -iname '*.msi' -o -iname '*.exe' \) | wc -l)" -ge 2
+          test "$(find release-artifacts -type f -iname '*.dmg' | wc -l)" -ge 1
+          test "$(find release-artifacts -type f \( -iname '*.AppImage' -o -iname '*.deb' \) | wc -l)" -ge 2
+      - name: Publish draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: release-artifacts/**/*
+          fail_on_unmatched_files: true

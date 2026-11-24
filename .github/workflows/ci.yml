@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contract:
+    name: Contract and versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: loonghao/vx@v0.9.34
+        with:
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
+      - run: vx just contract-check
+      - name: Install Linux desktop dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
+            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: vx just validate x86_64-unknown-linux-gnu
+
+  desktop-smoke:
+    name: Desktop smoke (${{ matrix.platform }})
+    needs: contract
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: x86_64-pc-windows-msvc
+          - os: macos-latest
+            platform: aarch64-apple-darwin
+          - os: ubuntu-22.04
+            platform: x86_64-unknown-linux-gnu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: loonghao/vx@v0.9.34
+        with:
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
+      - name: Install Linux desktop dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
+            libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: vx just desktop-smoke ${{ matrix.platform }}

@@ -1,4 +1,5 @@
 import { Settings } from 'lucide-react';
+import DccMcpBrand from '../../components/DccMcpBrand';
 
 export interface SidebarItem {
   id: string;
@@ -19,8 +20,7 @@ export default function Sidebar({ items, activeId, gatewayAddress, onSelect, onS
   return (
     <aside className="flex w-[220px] shrink-0 flex-col border-r border-[#222225] bg-[#111112] p-3">
       <div className="mb-5 flex items-center gap-2 px-2 py-1">
-        <div className="flex h-6 w-6 items-center justify-center border border-[#45454b] text-[9px] font-semibold">D·M</div>
-        <span className="text-[13px] font-semibold tracking-wide">dcc-mcp</span>
+        <DccMcpBrand size={24} className="text-[13px]" />
       </div>
       <nav className="min-h-0 flex-1 space-y-4 overflow-y-auto">
         {groups.map((group) => (

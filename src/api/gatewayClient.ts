@@ -1,75 +1,80 @@
-import type {
-  DccInstance,
-  GatewayCallEvent,
-  GatewayCallRecord,
-  GatewayHealth,
-} from '../types/gateway';
+import type { DccInstance, GatewayCallRecord } from '../types/gateway';
 
 export interface GatewayClientOptions {
   baseUrl: string;
-  reconnect?: {
-    initialDelayMs?: number;
-    maxDelayMs?: number;
-  };
 }
 
-export type EventListener = (event: GatewayCallEvent) => void;
+export type EventListener = (event: Record<string, unknown>) => void;
 
 export class GatewayClient {
   private readonly baseUrl: string;
-  private readonly initialDelayMs: number;
-  private readonly maxDelayMs: number;
   private eventSource: EventSource | null = null;
-  private reconnectTimer: number | null = null;
   private stopped = false;
-  private retryCount = 0;
 
   constructor(options: GatewayClientOptions) {
     this.baseUrl = options.baseUrl.replace(/\/$/, '');
-    this.initialDelayMs = options.reconnect?.initialDelayMs ?? 500;
-    this.maxDelayMs = options.reconnect?.maxDelayMs ?? 10_000;
   }
 
-  async getHealth(): Promise<GatewayHealth> {
-    return this.get<GatewayHealth>('/api/v1/health');
+  async getHealth(): Promise<Record<string, unknown>> {
+    try {
+      return await this.get<Record<string, unknown>>('/health');
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('HTTP 404')) {
+        return this.get<Record<string, unknown>>('/admin/api/health');
+      }
+      throw error;
+    }
   }
 
   async getInstances(): Promise<DccInstance[]> {
-    return this.get<DccInstance[]>('/api/v1/instances');
-  }
-
-  async getCalls(page = 1, pageSize = 50): Promise<GatewayCallRecord[]> {
-    const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) });
-    return this.get<GatewayCallRecord[]>(`/api/v1/calls?${params.toString()}`);
-  }
-
-  async retryCall(traceId: string): Promise<void> {
-    const response = await fetch(`${this.baseUrl}/api/v1/calls/${encodeURIComponent(traceId)}/retry`, {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-    });
-    if (!response.ok) {
-      throw new Error(`Gateway retry failed with HTTP ${response.status}`);
+    let payload: { instances?: DccInstance[] } | DccInstance[];
+    try {
+      payload = await this.get<{ instances?: DccInstance[] } | DccInstance[]>('/instances');
+    } catch (error) {
+      if (!(error instanceof Error) || !error.message.includes('HTTP 404')) {
+        throw error;
+      }
+      payload = await this.get<{ instances?: DccInstance[] } | DccInstance[]>(
+        '/admin/api/instances',
+      );
     }
+    return Array.isArray(payload) ? payload : (payload.instances ?? []);
+  }
+
+  async getCalls(limit = 200): Promise<GatewayCallRecord[]> {
+    const params = new URLSearchParams({ limit: String(limit) });
+    const payload = await this.get<{ calls?: GatewayCallRecord[] } | GatewayCallRecord[]>(
+      `/admin/api/calls?${params.toString()}`,
+    );
+    return Array.isArray(payload) ? payload : (payload.calls ?? []);
   }
 
   subscribe(listener: EventListener): () => void {
     this.stopped = false;
-    this.openEventStream(listener);
-    return () => this.stopEvents();
+    this.eventSource?.close();
+    const source = new EventSource(`${this.baseUrl}/admin/api/events`);
+    this.eventSource = null;
+    source.onmessage = (message) => {
+      try {
+        const parsed = JSON.parse(message.data) as { data?: Record<string, unknown> };
+        listener(parsed.data ?? parsed);
+      } catch {
+        // Ignore malformed frames so a single bad event cannot kill the stream.
+      }
+    };
+    return () => this.stop();
   }
 
-  stopEvents(): void {
+  stop(): void {
     this.stopped = true;
     this.eventSource?.close();
     this.eventSource = null;
-    if (this.reconnectTimer !== null) {
-      window.clearTimeout(this.reconnectTimer);
-      this.reconnectTimer = null;
-    }
   }
 
   private async get<T>(path: string): Promise<T> {
+    if (this.stopped) {
+      throw new Error('Gateway client is stopped');
+    }
     const response = await fetch(`${this.baseUrl}${path}`, {
       headers: { Accept: 'application/json' },
     });
@@ -78,39 +83,8 @@ export class GatewayClient {
     }
     return response.json() as Promise<T>;
   }
-
-  private openEventStream(listener: EventListener): void {
-    if (this.stopped) {
-      return;
-    }
-    this.eventSource?.close();
-    const source = new EventSource(`${this.baseUrl}/api/v1/events`);
-    this.eventSource = source;
-    source.onopen = () => {
-      this.retryCount = 0;
-    };
-    source.onmessage = (message) => {
-      try {
-        listener(JSON.parse(message.data) as GatewayCallEvent);
-      } catch {
-        // Ignore malformed events so a single bad frame cannot kill the stream.
-      }
-    };
-    source.onerror = () => {
-      source.close();
-      if (this.stopped) {
-        return;
-      }
-      const delay = Math.min(
-        this.maxDelayMs,
-        this.initialDelayMs * 2 ** Math.min(this.retryCount, 5),
-      );
-      this.retryCount += 1;
-      this.reconnectTimer = window.setTimeout(() => this.openEventStream(listener), delay);
-    };
-  }
 }
 
 export const localGatewayClient = new GatewayClient({
-  baseUrl: 'http://127.0.0.1:18730',
+  baseUrl: 'http://127.0.0.1:9765',
 });

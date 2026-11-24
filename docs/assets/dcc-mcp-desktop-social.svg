@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">DCC-MCP Desktop</title>
+  <desc id="desc">Square social media card for DCC-MCP Desktop.</desc>
+  <rect width="1200" height="1200" rx="128" fill="#111112"/>
+  <path d="M128 230H1072M128 970H1072" stroke="#303036" stroke-width="2"/>
+  <g transform="translate(336 86) scale(2.06)" shape-rendering="geometricPrecision">
+    <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
+    <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
+    <rect x="33" y="118" width="11" height="11" rx="2" fill="#16B9E6"/>
+    <rect x="46" y="101" width="10" height="10" rx="2" fill="#16B9E6"/>
+    <rect x="46" y="135" width="10" height="10" rx="2" fill="#149C9C"/>
+    <rect x="59" y="117" width="16" height="16" rx="2" fill="#ECECEF"/>
+    <text x="47" y="151" fill="#ECECEF" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">D</text>
+    <text x="82" y="151" fill="#16B9E6" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">C</text>
+    <text x="118" y="151" fill="#0A74DA" font-family="Arial Black, Archivo Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-4">C</text>
+    <path d="M153 128H170" fill="none" stroke="#149C9C" stroke-width="5" stroke-linecap="round"/>
+    <path d="M198 75L225 91V165L198 181L171 165V91Z" fill="#0B1F45" stroke="#16B9E6" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M198 111L211 119V137L198 145L185 137V119Z" fill="#ECECEF" stroke="#0B1F45" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="198" cy="128" r="4" fill="#149C9C"/>
+  </g>
+  <g font-family="Instrument Sans, Atkinson Hyperlegible Next, Arial, sans-serif" text-anchor="middle">
+    <text x="600" y="858" fill="#ECECEF" font-size="82" font-weight="700" letter-spacing="-2">DCC-MCP</text>
+    <text x="600" y="915" fill="#16B9E6" font-size="22" font-weight="600" letter-spacing="7">DESKTOP CONTROL PLANE</text>
+    <text x="600" y="1032" fill="#8E8E93" font-family="IBM Plex Mono, Consolas, monospace" font-size="16" letter-spacing="1">DIGITAL CONTENT CREATION | DESKTOP | MODEL CONTEXT PROTOCOL</text>
+  </g>
+</svg>
