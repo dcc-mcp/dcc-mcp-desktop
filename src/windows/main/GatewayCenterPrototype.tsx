@@ -768,7 +768,7 @@ function CircularHubRoutingGraph({ lifecycleState, compact = false, onSelectNode
 
         {/* 中心圆环：DCCMCP 本地守护进程网关 */}
         <button
-          title="DCCMCP Server (127.0.0.1:18730 · 统一汇聚 CLI Shim 与 MCP)"
+          title="DCCMCP Server (127.0.0.1:9765 · 统一汇聚 CLI Shim 与 MCP)"
           onClick={() => onSelectNode && onSelectNode('server')}
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[42px] h-[42px] rounded-full bg-[#232329] border border-[#34343d] hover:border-[#52525e] flex items-center justify-center transition-colors cursor-pointer"
         >
@@ -902,7 +902,7 @@ function CircularHubRoutingGraph({ lifecycleState, compact = false, onSelectNode
           className="w-[66px] h-[66px] rounded-full bg-[#202026] border border-[#383842] hover:border-[#525260] flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors"
         >
           <DccMcpGlyph size={20} />
-          <span className="text-[9.5px] font-mono text-[#a1a1aa]">:18730</span>
+          <span className="text-[9.5px] font-mono text-[#a1a1aa]">:9765</span>
         </button>
         <span className="mt-1.5 text-[11px] font-mono text-[#71717a]">DCCMCP Server</span>
       </div>
@@ -1257,7 +1257,7 @@ function TrayMiniWindow({
 
       {/* 4. 底部操作栏: 打开主窗口 | 退出 (1:1 复刻截图右下角) */}
       <div className="h-[40px] px-4 border-t border-[#232328] flex items-center justify-between text-[12.5px] shrink-0 bg-[#151517]">
-        <span className="font-mono text-[11px] text-[#63636b]">127.0.0.1:18730</span>
+        <span className="font-mono text-[11px] text-[#63636b]">127.0.0.1:9765</span>
         <div className="flex items-center gap-4">
           <button
             onClick={() => onOpenMain('agents')}
@@ -1400,7 +1400,7 @@ export default function App() {
             detail: 'DCCMCP Server 全部桥接就绪 · 等待指令',
             metrics: '0.8 ms',
             cliCmd: 'dccmcp status --all-instances',
-            targetDcc: '127.0.0.1:18730',
+            targetDcc: '127.0.0.1:9765',
             protocol: 'Local HTTP/IPC',
           };
 
@@ -1621,7 +1621,7 @@ export default function App() {
                 ▸ invoking CLI shim: dccmcp exec blender bake_pbr --instance blender-01
               </div>
               <div className="text-[#71717a]">
-                ▸ routed via DCCMCP Server (127.0.0.1:18730) → Python Socket :51231
+                ▸ routed via DCCMCP Server (127.0.0.1:9765) → Python Socket :51231
               </div>
             </div>
           </div>
@@ -1780,7 +1780,7 @@ export default function App() {
               >
                 <span className="flex items-center gap-2 truncate font-mono">
                   <StatusDot state={lifecycleState} />
-                  <span>127.0.0.1:18730</span>
+                  <span>127.0.0.1:9765</span>
                 </span>
                 <span className="text-[#63636b] font-mono">CLI 就绪</span>
               </div>
@@ -2166,7 +2166,7 @@ export default function App() {
                       <div className="p-3.5 rounded-[8px] bg-[#1a1a1e] border border-[#26262c] space-y-1">
                         <div className="font-medium text-[#f4f4f5]">2. DCCMCP Server 统一留痕</div>
                         <div className="text-[#8b8b93] leading-relaxed">
-                          监听 <code className="font-mono text-[#d4d4d8]">127.0.0.1:18730</code> 与 Unix Socket，为每次 CLI 调用生成唯一 TraceID，维护多窗口 PID 互斥锁并防止并发写坏工程文件。
+                          监听 <code className="font-mono text-[#d4d4d8]">127.0.0.1:9765</code> 与 Unix Socket，为每次 CLI 调用生成唯一 TraceID，维护多窗口 PID 互斥锁并防止并发写坏工程文件。
                         </div>
                       </div>
                       <div className="p-3.5 rounded-[8px] bg-[#1a1a1e] border border-[#26262c] space-y-1">
@@ -2376,7 +2376,7 @@ export default function App() {
                           <div className="text-[#f4f4f5] font-medium">DCCMCP Server 本地监听端点</div>
                           <div className="text-[12px] text-[#8b8b93]">同时接收 HTTP REST、Unix Domain Socket 与 MCP SSE 转发</div>
                         </div>
-                        <span className="font-mono text-[12px] text-[#e4e4e7]">127.0.0.1:18730</span>
+                        <span className="font-mono text-[12px] text-[#e4e4e7]">127.0.0.1:9765</span>
                       </div>
                       <div className="py-3.5 flex items-center justify-between">
                         <div>
@@ -2542,7 +2542,7 @@ description: Control Blender, Maya, UE5 & CUA windows
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#71717a]">网关守护中心</span>
-                  <span className="font-mono text-[#d4d4d8]">DCCMCP Server (:18730)</span>
+                  <span className="font-mono text-[#d4d4d8]">DCCMCP Server (:9765)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#71717a]">目标软件与协议</span>
@@ -2652,7 +2652,7 @@ description: Control Blender, Maya, UE5 & CUA windows
               <div className="space-y-3 text-[12px]">
                 <div className="py-2 flex items-center gap-2 text-[#e4e4e7]">
                   <StatusDot state="connected" />
-                  <span>全部 4 个软件连接器与本地 DCCMCP Server (:18730) 握手正常。</span>
+                  <span>全部 4 个软件连接器与本地 DCC-MCP Gateway (:9765) 握手正常。</span>
                 </div>
                 <div className="flex justify-end">
                   <button

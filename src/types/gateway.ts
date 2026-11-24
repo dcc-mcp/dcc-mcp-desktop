@@ -1,4 +1,5 @@
 export type LifecycleState = 'connected' | 'running' | 'failed' | 'completed';
+export type SidecarState = 'stopped' | 'starting' | 'running' | 'failed';
 
 export type GatewayIngress = 'cli' | 'mcp';
 
@@ -9,11 +10,37 @@ export type DccProtocol =
   | 'cua_window';
 
 export interface GatewayHealth {
-  status: 'ok' | 'degraded' | 'offline';
+  status: string;
   version: string;
-  listen_mode: 'loopback' | 'lan';
+  listen_mode: string;
   address: string;
   uptime_seconds: number;
+}
+
+export interface SidecarStatus {
+  state: SidecarState;
+  mode: 'stopped' | 'bundled' | 'external';
+  pid: number | null;
+  started_at: string | null;
+  last_error: string | null;
+  binary: string;
+  host: string;
+  port: number;
+}
+
+export interface GatewayRuntimeStatus {
+  sidecar: SidecarStatus;
+  health: {
+    reachable: boolean;
+    status: string;
+    version: string | null;
+  };
+}
+
+export interface SidecarLog {
+  timestamp: string;
+  stream: string;
+  message: string;
 }
 
 export interface GatewayCallEvent {

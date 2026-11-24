@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Activity, ExternalLink, RefreshCw, Settings, X } from 'lucide-react';
+import { listen } from '@tauri-apps/api/event';
 import { openMainWindow, quitApp } from '../../api/tauriCommands';
 import { useGatewayStore } from '../../stores/useGatewayStore';
+import type { GatewayRuntimeStatus } from '../../types/gateway';
 import { HubRoutingGraph } from './HubRoutingGraph';
 import { LiveCallStream } from './LiveCallStream';
 
@@ -10,11 +12,15 @@ type TrayTab = 'agents' | 'instances' | 'skills' | 'routing';
 
 export default function TrayApp() {
   const [tab, setTab] = useState<TrayTab>('routing');
-  const { events, lifecycleState, startMockEvents } = useGatewayStore();
+  const { events, runtime, refreshGateway, connectGateway, setRuntime } = useGatewayStore();
 
   useEffect(() => {
-    const stopMockEvents = startMockEvents();
     let disposed = false;
+    void refreshGateway();
+    const stopGatewayEvents = connectGateway();
+    const unlistenStatus = listen<GatewayRuntimeStatus>('gateway://status', ({ payload }) => {
+      setRuntime(payload);
+    });
     const unlistenPromise = getCurrentWindow().onFocusChanged(({ payload: focused }) => {
       if (!focused && !disposed) {
         void getCurrentWindow().hide();
@@ -22,10 +28,11 @@ export default function TrayApp() {
     });
     return () => {
       disposed = true;
-      stopMockEvents();
+      stopGatewayEvents();
+      void unlistenStatus.then((unlisten) => unlisten());
       void unlistenPromise.then((unlisten) => unlisten());
     };
-  }, [startMockEvents]);
+  }, [connectGateway, refreshGateway, setRuntime]);
 
   return (
     <div className="magpie-panel flex h-full w-full flex-col overflow-hidden text-[#ececef]">
@@ -38,7 +45,7 @@ export default function TrayApp() {
           </div>
         </div>
         <div className="flex items-center gap-1 text-[#8e8e93]">
-          <button type="button" className="rounded p-1.5 hover:bg-[#242428] hover:text-[#ececef]" title="刷新" onClick={() => window.location.reload()}>
+          <button type="button" className="rounded p-1.5 hover:bg-[#242428] hover:text-[#ececef]" title="刷新" onClick={() => void refreshGateway()}>
             <RefreshCw size={14} />
           </button>
           <button type="button" className="rounded p-1.5 hover:bg-[#242428] hover:text-[#ececef]" title="设置" onClick={() => void openMainWindow('settings')}>
@@ -61,12 +68,12 @@ export default function TrayApp() {
       </nav>
 
       <div className="flex h-[34px] shrink-0 items-center justify-between border-b border-[#222225] px-3 text-[10px]">
-        <span className="flex items-center gap-1.5 text-[#8e8e93]"><Activity size={12} className="text-[#22c55e]" /> 今日 {events.length} 次调用 · CLI {events.filter((event) => event.ingress === 'cli').length} / MCP {events.filter((event) => event.ingress === 'mcp').length}</span>
+        <span className="flex items-center gap-1.5 text-[#8e8e93]"><Activity size={12} className={runtime.health.reachable ? 'text-[#22c55e]' : 'text-[#ef4444]'} /> {runtime.sidecar.state} · {events.length} 次调用 · CLI {events.filter((event) => event.ingress === 'cli').length} / MCP {events.filter((event) => event.ingress === 'mcp').length}</span>
         <button type="button" className="flex items-center gap-1 text-[#d4d4d8] hover:text-white" onClick={() => void openMainWindow('topology')}>打开路由 <ExternalLink size={11} /></button>
       </div>
 
       <div key={tab} className="magpie-tab-view">
-        {tab === 'routing' ? <HubRoutingGraph state={lifecycleState} events={events} /> : <div className="flex h-[150px] items-center justify-center text-[11px] text-[#71717a]">{tab === 'agents' ? 'Agent 接入状态' : tab === 'instances' ? 'DCC 实例状态' : '已加载技能状态'}</div>}
+        {tab === 'routing' ? <HubRoutingGraph state={runtime.health.reachable ? 'connected' : 'failed'} events={events} /> : <div className="flex h-[150px] items-center justify-center text-[11px] text-[#71717a]">{tab === 'agents' ? 'Agent 接入状态' : tab === 'instances' ? 'DCC 实例状态' : '已加载技能状态'}</div>}
       </div>
       <LiveCallStream events={events} />
 
