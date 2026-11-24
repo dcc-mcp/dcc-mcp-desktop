@@ -1,0 +1,1 @@
+{"main-capability":{"identifier":"main-capability","description":"Permissions for the dcc-mcp desktop windows","local":true,"windows":["main","tray"],"permissions":["core:default"]}}
