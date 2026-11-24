@@ -8,6 +8,7 @@ const tauriConfig = await read('src-tauri/tauri.conf.json');
 const cargo = await readFile(path.join(root, 'src-tauri', 'Cargo.toml'), 'utf8');
 const cargoVersion = cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
 const expected = process.argv[2];
+const expectedVersion = expected?.replace(/^v/, '');
 
 const versions = {
   'package.json': packageJson.version,
@@ -15,7 +16,7 @@ const versions = {
   'tauri.conf.json': tauriConfig.version,
 };
 const unique = new Set(Object.values(versions));
-if (unique.size !== 1 || (expected && !unique.has(expected))) {
+if (unique.size !== 1 || (expectedVersion && !unique.has(expectedVersion))) {
   console.error(JSON.stringify({ versions, expected }, null, 2));
   process.exit(1);
 }
