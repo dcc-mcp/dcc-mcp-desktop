@@ -1,13 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc" data-capability-motif="dcc-flow-and-mcp-gateway">
   <title id="title">DCC-MCP Desktop</title>
-  <desc id="desc">Connected route nodes feeding a central MCP gateway and a DCC output path.</desc>
+  <desc id="desc">A pixel-fed DCC flow enters an MCP gateway hexagon inside a dark circular desktop badge.</desc>
   <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
   <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
 
-  <path d="M61 62H140C172 62 195 82 195 112C195 126 190 138 180 147H148C157 138 162 127 162 116C162 102 151 93 136 93H97V112H136C152 112 162 122 162 136C162 150 152 159 136 159H97V194H61V62Z" fill="#16B9E6"/>
-  <path d="M61 112H97V132H136C152 132 162 142 162 156C162 170 152 180 136 180H97V194H61V112Z" fill="#0A74DA"/>
-  <path d="M97 93H136C151 93 162 102 162 116C162 127 157 138 148 147H111C120 139 125 130 125 119C125 111 120 105 111 105H97V93Z" fill="#149C9C"/>
-  <path d="M97 112H125C135 112 141 118 141 127C141 136 135 142 125 142H97V112Z" fill="#0B1F45"/>
-  <rect x="104" y="112" width="22" height="22" rx="5" fill="#ECECEF"/>
-  <rect x="109" y="117" width="12" height="12" rx="3" fill="#16B9E6"/>
+  <g fill="#16B9E6">
+    <rect x="40" y="112" width="14" height="14" rx="2"/>
+    <rect x="54" y="94" width="13" height="13" rx="2"/>
+    <rect x="54" y="130" width="13" height="13" rx="2"/>
+    <rect x="67" y="108" width="18" height="18" rx="2" fill="#ECECEF"/>
+  </g>
+  <rect x="54" y="148" width="13" height="13" rx="2" fill="#149C9C"/>
+
+  <path d="M72 70H106C133 70 151 88 151 113C151 124 147 133 140 140C147 148 151 157 151 167C151 180 135 186 107 186H72V70Z" fill="#16B9E6"/>
+  <path d="M98 101H107C119 101 126 108 126 118C126 128 119 135 107 135H98V101Z" fill="#0B1F45"/>
+  <path d="M72 128H98V155H107C119 155 126 148 126 138C126 136 126 134 125 132C135 134 143 140 147 148C150 153 151 159 151 167C151 180 135 186 107 186H72V128Z" fill="#0A74DA"/>
+
+  <path d="M133 112C143 94 162 87 180 92C202 98 214 119 207 141C201 162 180 174 160 168C147 165 138 157 133 147" fill="none" stroke="#16B9E6" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M133 147C143 163 160 170 177 166C187 164 195 158 201 149" fill="none" stroke="#0A74DA" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M190 82L221 100V156L190 174L159 156V100Z" fill="#0B1F45" stroke="#16B9E6" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M190 111L205 120V136L190 145L175 136V120Z" fill="#ECECEF" stroke="#0B1F45" stroke-width="5" stroke-linejoin="round"/>
+  <circle cx="190" cy="128" r="5" fill="#149C9C"/>
 </svg>

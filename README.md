@@ -4,6 +4,12 @@
 
 Cross-platform desktop control plane for the `dcc-mcp` gateway. The client uses Tauri v2, React, TypeScript, and a Rust shell for tray behavior, gateway lifecycle, and local provisioning.
 
+## Brand assets
+
+- [Desktop mark](public/branding/dcc-mcp-desktop-mark.svg) for the app icon, favicon, and avatar surfaces.
+- [Light web lockup](public/branding/dcc-mcp-desktop-lockup.svg) and [dark web lockup](public/branding/dcc-mcp-desktop-lockup-dark.svg) for product headers.
+- [Social card](docs/assets/dcc-mcp-desktop-social.svg) for square social media posts.
+
 ## Development
 
 This repository uses `vx` for toolchain management and `just` as the single task runner:

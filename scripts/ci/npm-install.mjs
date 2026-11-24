@@ -2,12 +2,8 @@ import { spawnSync } from 'node:child_process';
 import { rmSync } from 'node:fs';
 import path from 'node:path';
 
-const nodeRoot = process.platform === 'win32'
-  ? path.dirname(process.execPath)
-  : path.dirname(path.dirname(process.execPath));
-const npmCli = path.join(nodeRoot, 'lib', 'node_modules', 'npm', 'bin', 'npm-cli.js');
 for (let attempt = 1; attempt <= 3; attempt += 1) {
-  const result = spawnSync(process.execPath, [npmCli, 'ci', '--ignore-scripts'], {
+  const result = spawnSync('vx', ['npm', 'ci', '--ignore-scripts'], {
     stdio: 'inherit',
     shell: process.platform === 'win32',
     env: {
