@@ -639,18 +639,14 @@ function MagpieToggle({ checked, onChange, disabled = false, size = 'md' }) {
 // 极简飞鸟/节点几何标识 (致敬 Magpie 顶栏小图标但代表 dcc-mcp 汇聚网关)
 function DccMcpGlyph({ size = 16 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" className="shrink-0">
-      <path
-        d="M3.5 6L9 10L3.5 14V6Z"
-        fill="#f4f4f5"
-      />
-      <path
-        d="M9.5 10L16.5 5.5L14.2 11.2L16.5 14.5L9.5 10Z"
-        stroke="#f4f4f5"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <img
+      src="/branding/dcc-mcp-desktop-mark.svg"
+      alt=""
+      aria-hidden="true"
+      width={size}
+      height={size}
+      className="shrink-0 object-contain"
+    />
   );
 }
 

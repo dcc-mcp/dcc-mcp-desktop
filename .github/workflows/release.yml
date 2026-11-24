@@ -35,11 +35,11 @@ jobs:
             validation: linux
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: loonghao/vx@v0.9.34
         with:
-          node-version: 22
-          cache: npm
-      - uses: dtolnay/rust-toolchain@stable
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
       - name: Install Windows packaging tools
         if: runner.os == 'Windows'
         run: choco install wixtoolset -y --no-progress
@@ -49,17 +49,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
             libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
-      - run: npm ci
       - name: Check version contract
         if: startsWith(github.ref, 'refs/tags/v')
-        run: node scripts/ci/check-version.mjs ${{ github.ref_name }}
+        run: vx node scripts/ci/check-version.mjs ${{ github.ref_name }}
         shell: bash
-      - name: Prepare bundled sidecars
-        run: node scripts/ci/fetch-sidecars.mjs ${{ matrix.platform }}
       - name: Build Tauri bundles
-        run: npm run tauri build -- --target ${{ matrix.platform }} --bundles ${{ matrix.bundles }}
+        run: vx just desktop-bundle ${{ matrix.platform }} ${{ matrix.bundles }}
       - name: Verify bundle outputs
-        run: node scripts/ci/verify-bundle.mjs ${{ matrix.validation }} ${{ matrix.platform }}
+        run: vx just verify-bundle ${{ matrix.validation }} ${{ matrix.platform }}
       - name: Hash release artifacts
         shell: bash
         run: |

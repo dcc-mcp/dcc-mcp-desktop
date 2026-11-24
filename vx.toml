@@ -1,0 +1,6 @@
+[tools]
+just = "1.59.0"
+node = "22"
+
+[settings]
+auto_install = true

@@ -19,22 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: loonghao/vx@v0.9.34
         with:
-          node-version: 22
-          cache: npm
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
-      - run: node scripts/ci/check-version.mjs
-      - run: cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
-      - name: Prepare bundled sidecars
-        run: node scripts/ci/fetch-sidecars.mjs x86_64-unknown-linux-gnu
-      - run: cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
-      - run: cargo test --manifest-path src-tauri/Cargo.toml
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
+      - run: vx just contract-check
+      - run: vx just validate x86_64-unknown-linux-gnu
 
   desktop-smoke:
     name: Desktop smoke (${{ matrix.platform }})
@@ -52,19 +43,15 @@ jobs:
             platform: x86_64-unknown-linux-gnu
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: loonghao/vx@v0.9.34
         with:
-          node-version: 22
-          cache: npm
-      - uses: dtolnay/rust-toolchain@stable
+          version: "0.9.34"
+          cache-key-prefix: "vx-tools-v0.9.34"
+          setup: "true"
       - name: Install Linux desktop dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
             libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
-      - run: npm ci
-      - name: Prepare bundled sidecars
-        run: node scripts/ci/fetch-sidecars.mjs ${{ matrix.platform }}
-      - name: Build desktop shell
-        run: npm run tauri build -- --target ${{ matrix.platform }} --no-bundle
+      - run: vx just desktop-smoke ${{ matrix.platform }}

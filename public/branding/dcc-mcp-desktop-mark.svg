@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">DCC-MCP Desktop</title>
+  <desc id="desc">Connected route nodes feeding a central MCP gateway and a DCC output path.</desc>
+  <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
+  <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
+
+  <path d="M61 62H140C172 62 195 82 195 112C195 126 190 138 180 147H148C157 138 162 127 162 116C162 102 151 93 136 93H97V112H136C152 112 162 122 162 136C162 150 152 159 136 159H97V194H61V62Z" fill="#16B9E6"/>
+  <path d="M61 112H97V132H136C152 132 162 142 162 156C162 170 152 180 136 180H97V194H61V112Z" fill="#0A74DA"/>
+  <path d="M97 93H136C151 93 162 102 162 116C162 127 157 138 148 147H111C120 139 125 130 125 119C125 111 120 105 111 105H97V93Z" fill="#149C9C"/>
+  <path d="M97 112H125C135 112 141 118 141 127C141 136 135 142 125 142H97V112Z" fill="#0B1F45"/>
+  <rect x="104" y="112" width="22" height="22" rx="5" fill="#ECECEF"/>
+  <rect x="109" y="117" width="12" height="12" rx="3" fill="#16B9E6"/>
+</svg>

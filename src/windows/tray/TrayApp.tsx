@@ -7,6 +7,7 @@ import { useGatewayStore } from '../../stores/useGatewayStore';
 import type { GatewayRuntimeStatus } from '../../types/gateway';
 import { HubRoutingGraph } from './HubRoutingGraph';
 import { LiveCallStream } from './LiveCallStream';
+import DccMcpBrand from '../../components/DccMcpBrand';
 
 type TrayTab = 'agents' | 'instances' | 'skills' | 'routing';
 
@@ -38,7 +39,7 @@ export default function TrayApp() {
     <div className="magpie-panel flex h-full w-full flex-col overflow-hidden text-[#ececef]">
       <header className="flex h-[48px] shrink-0 items-center justify-between border-b border-[#29292e] px-3" data-tauri-drag-region>
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center border border-[#49494f] bg-[#1c1c20] text-[9px] font-semibold tracking-tight">D·M</div>
+          <DccMcpBrand size={24} showLabel={false} />
           <div>
             <div className="text-[12px] font-semibold tracking-wide">dcc-mcp</div>
             <div className="font-mono text-[9px] text-[#5c5c62]">QUICK PANEL</div>

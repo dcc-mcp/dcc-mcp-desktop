@@ -20,6 +20,10 @@
   --dcc-running: #3b82f6;
   --dcc-failed: #ef4444;
   --dcc-completed: #a1a1aa;
+  --dcc-brand-navy: #0b1f45;
+  --dcc-brand-blue: #0a74da;
+  --dcc-brand-cyan: #16b9e6;
+  --dcc-brand-teal: #149c9c;
 }
 
 * {
