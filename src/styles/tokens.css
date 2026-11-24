@@ -40,6 +40,10 @@ body {
   color: var(--dcc-text);
 }
 
+body.tray-body {
+  background: transparent;
+}
+
 button,
 input,
 select {
@@ -100,4 +104,47 @@ select:focus-visible {
   border: 1px solid #2b2b30;
   border-radius: 10px;
   box-shadow: 0 16px 48px rgb(0 0 0 / 45%);
+}
+
+.magpie-panel {
+  background: #171719;
+  border: 1px solid #303036;
+  border-radius: 10px;
+  box-shadow: 0 18px 48px rgb(0 0 0 / 42%);
+  animation: magpie-panel-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.magpie-tab-view {
+  animation: magpie-tab-glide 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes magpie-tab-glide {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes magpie-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magpie-panel,
+  .magpie-tab-view,
+  .dcc-route-flow,
+  .dcc-pulse {
+    animation: none;
+  }
 }

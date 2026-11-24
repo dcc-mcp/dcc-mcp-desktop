@@ -35,5 +35,7 @@ pub fn sync(source_id: &str) -> Result<(), String> {
     if source_id.trim().is_empty() {
         return Err("marketplace source id cannot be empty".to_string());
     }
-    Err(format!("marketplace sync for {source_id} is scheduled for Phase 3"))
+    Err(format!(
+        "marketplace sync for {source_id} is scheduled for Phase 3"
+    ))
 }

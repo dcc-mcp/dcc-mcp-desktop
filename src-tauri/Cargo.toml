@@ -6,7 +6,7 @@ authors = ["loonghao <hal.long@outlook.com>"]
 edition = "2021"
 
 [build-dependencies]
-tauri-build = { version = "2.5.1" }
+tauri-build = { version = "2.5.1", features = [] }
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }

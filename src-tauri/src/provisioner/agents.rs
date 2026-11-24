@@ -39,7 +39,9 @@ pub fn scan() -> Vec<DetectedAgent> {
             version: "detected by PATH".to_string(),
             installed: true,
             connected: false,
-            config_path: Some(format!("{home}/.claude/plugins/dcc-mcp/.claude-plugin/plugin.json")),
+            config_path: Some(format!(
+                "{home}/.claude/plugins/dcc-mcp/.claude-plugin/plugin.json"
+            )),
             supported_ingress: vec!["cli".to_string(), "dual".to_string()],
         },
         DetectedAgent {
@@ -67,7 +69,9 @@ pub fn provision(agent_id: &str, mode: &str, enabled: bool) -> Result<ProvisionO
         message: if enabled {
             format!("Provisioning preview ready for {agent_id} using {mode}; no files changed in Phase 1.")
         } else {
-            format!("Disable preview ready for {agent_id}; owned entries will be removed after backup.")
+            format!(
+                "Disable preview ready for {agent_id}; owned entries will be removed after backup."
+            )
         },
     })
 }

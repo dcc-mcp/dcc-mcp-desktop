@@ -40,7 +40,11 @@ pub fn get_gateway_status() -> GatewayStatus {
         status: if online { "ok" } else { "offline" }.to_string(),
         version: if online { "detected" } else { "phase-1-mock" }.to_string(),
         listen_mode: "loopback".to_string(),
-        address: format!("{}:{}", sidecar::DEFAULT_GATEWAY_HOST, sidecar::DEFAULT_GATEWAY_PORT),
+        address: format!(
+            "{}:{}",
+            sidecar::DEFAULT_GATEWAY_HOST,
+            sidecar::DEFAULT_GATEWAY_PORT
+        ),
         uptime_seconds: 0,
     }
 }
@@ -100,7 +104,10 @@ pub fn sync_marketplace_source(source_id: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn open_main_window<R: Runtime>(app: AppHandle<R>, route: Option<String>) -> Result<(), String> {
+pub fn open_main_window<R: Runtime>(
+    app: AppHandle<R>,
+    route: Option<String>,
+) -> Result<(), String> {
     tray::show_main_window(&app);
     if let Some(route) = route {
         app.emit("open-main-route", route)

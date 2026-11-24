@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './styles/tokens.css';
 import TrayApp from './windows/tray/TrayApp';
 
+document.body.classList.add('tray-body');
+
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <TrayApp />

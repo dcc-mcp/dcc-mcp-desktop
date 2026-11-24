@@ -6,10 +6,7 @@ pub const DEFAULT_GATEWAY_HOST: &str = "127.0.0.1";
 pub const DEFAULT_GATEWAY_PORT: u16 = 18_730;
 
 pub fn gateway_is_reachable() -> bool {
-    let address = SocketAddr::new(
-        IpAddr::V4(Ipv4Addr::LOCALHOST),
-        DEFAULT_GATEWAY_PORT,
-    );
+    let address = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), DEFAULT_GATEWAY_PORT);
     TcpStream::connect_timeout(&address, Duration::from_millis(350)).is_ok()
 }
 

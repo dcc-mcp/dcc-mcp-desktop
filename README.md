@@ -8,6 +8,7 @@ Phase 1 is implemented as a working UI shell.
 
 - Main window based on the existing `gateway_center.tsx` prototype.
 - Independent 380 × 540 tray window with routing graph and live call stream.
+- Tray window follows Magpie's quick-panel behavior. It anchors beside the tray icon, chooses a top or bottom opening direction, hides on focus loss, and uses short CSS panel transitions.
 - Mock lifecycle events for `connected`, `running`, `failed`, and `completed`.
 - Typed gateway, agent, and marketplace contracts.
 - HTTP/SSE client with bounded exponential reconnect.
