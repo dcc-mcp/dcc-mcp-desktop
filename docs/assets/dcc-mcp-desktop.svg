@@ -8,12 +8,16 @@
   <g transform="translate(96 112) scale(0.75)">
     <circle cx="128" cy="128" r="112" fill="#0B1F45"/>
     <circle cx="128" cy="128" r="112" fill="none" stroke="#18345F" stroke-width="2"/>
-    <path d="M61 62H140C172 62 195 82 195 112C195 126 190 138 180 147H148C157 138 162 127 162 116C162 102 151 93 136 93H97V112H136C152 112 162 122 162 136C162 150 152 159 136 159H97V194H61V62Z" fill="#16B9E6"/>
-    <path d="M61 112H97V132H136C152 132 162 142 162 156C162 170 152 180 136 180H97V194H61V112Z" fill="#0A74DA"/>
-    <path d="M97 93H136C151 93 162 102 162 116C162 127 157 138 148 147H111C120 139 125 130 125 119C125 111 120 105 111 105H97V93Z" fill="#149C9C"/>
-    <path d="M97 112H125C135 112 141 118 141 127C141 136 135 142 125 142H97V112Z" fill="#0B1F45"/>
-    <rect x="104" y="112" width="22" height="22" rx="5" fill="#ECECEF"/>
-    <rect x="109" y="117" width="12" height="12" rx="3" fill="#16B9E6"/>
+    <path d="M60 68H143C178 68 198 91 198 128" fill="none" stroke="#16B9E6" stroke-width="30" stroke-linecap="butt" stroke-linejoin="round"/>
+    <path d="M198 128C198 165 178 188 143 188H60" fill="none" stroke="#0A74DA" stroke-width="30" stroke-linecap="butt" stroke-linejoin="round"/>
+    <path d="M57 84H79C91 84 97 91 105 101L112 109" fill="none" stroke="#149C9C" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M53 128H108" fill="none" stroke="#16B9E6" stroke-width="16" stroke-linecap="round"/>
+    <path d="M57 172H79C91 172 97 165 105 155L112 147" fill="none" stroke="#0A74DA" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="105" y="104" width="48" height="48" rx="13" fill="#16B9E6" stroke="#0B1F45" stroke-width="8"/>
+    <rect x="119" y="118" width="20" height="20" rx="5" fill="#ECECEF"/>
+    <rect x="124" y="123" width="10" height="10" rx="3" fill="#0B1F45"/>
+    <path d="M151 128H186" fill="none" stroke="#0A74DA" stroke-width="16" stroke-linecap="round"/>
+    <path d="M177 108L199 128L177 148Z" fill="#0A74DA"/>
   </g>
 
   <g fill="#ECECEF" font-family="Instrument Sans, Atkinson Hyperlegible Next, Arial, sans-serif">
