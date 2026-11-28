@@ -52,33 +52,22 @@ pub fn scan() -> Vec<DetectedDcc> {
     ]
 }
 
-pub fn install(dcc_id: &str) -> Result<(), String> {
+pub async fn install<R: tauri::Runtime>(
+    app: &tauri::AppHandle<R>,
+    dcc_id: &str,
+) -> Result<(), String> {
     if dcc_id.trim().is_empty() {
         return Err("DCC id cannot be empty".to_string());
     }
-    let (id, version) = dcc_id.split_once('@').unwrap_or((dcc_id, ""));
+    let (id, _) = dcc_id.split_once('@').unwrap_or((dcc_id, ""));
     let adapter = match id.to_ascii_lowercase().as_str() {
         "blender" | "maya" | "unreal" => id.to_ascii_lowercase(),
         "dcc-cua" => {
-            return Err("dcc-cua is installed as a CLI component, not an MCP bridge".to_string());
+            return Err("install the independently released dcc-cua runtime for CUA support".to_string());
         }
         _ => return Err(format!("unsupported DCC id: {id}")),
     };
-    let cli = crate::sidecar::CLI_SIDECAR;
-    let status = std::process::Command::new(cli)
-        .args(["install", &adapter])
-        .status()
-        .map_err(|error| format!("failed to launch {cli}: {error}"))?;
-    if !status.success() {
-        let suffix = if version.is_empty() {
-            String::new()
-        } else {
-            format!("@{version}")
-        };
-        return Err(format!(
-            "{cli} install {adapter}{suffix} exited with {status}"
-        ));
-    }
+    crate::sidecar::run_cli(app, &["install", &adapter]).await?;
     Ok(())
 }
 

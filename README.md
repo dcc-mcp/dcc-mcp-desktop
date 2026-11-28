@@ -25,7 +25,7 @@ Run `vx just --list` to see all available tasks.
 
 The first release is a Tauri v2 desktop shell around the real `dcc-mcp` gateway:
 
-- Bundled `dcc-mcp-server` and `dcc-mcp-cli` sidecars pinned by SHA-256 in `config/sidecars.json`.
+- Bundled `dcc-mcp-server` and `dccmcp` sidecars from independent Core and CLI releases, pinned by SHA-256 in `config/sidecars.json`.
 - Rust-owned gateway lifecycle with start, stop, restart, readiness probe, bounded logs, and exit cleanup.
 - An existing gateway on `127.0.0.1:9765` is adopted instead of being replaced.
 - Typed Tauri commands and a real HTTP/SSE client using the core gateway routes.

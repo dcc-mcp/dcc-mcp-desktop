@@ -42,6 +42,6 @@
     "active": true,
     "targets": "all",
     "icon": ["icons/icon.png", "icons/icon.ico"],
-    "externalBin": ["binaries/dcc-mcp-server", "binaries/dcc-mcp-cli"]
+    "externalBin": ["binaries/dcc-mcp-server", "binaries/dccmcp"]
   }
 }

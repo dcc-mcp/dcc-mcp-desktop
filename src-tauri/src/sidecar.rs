@@ -12,7 +12,29 @@ use tauri_plugin_shell::ShellExt;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
 pub const GATEWAY_PORT: u16 = 9_765;
 pub const GATEWAY_SIDECAR: &str = "dcc-mcp-server";
-pub const CLI_SIDECAR: &str = "dcc-mcp-cli";
+pub const CLI_SIDECAR: &str = "dccmcp";
+
+pub async fn run_cli<R: Runtime>(app: &AppHandle<R>, args: &[&str]) -> Result<Vec<u8>, String> {
+    let output = app
+        .shell()
+        .sidecar(CLI_SIDECAR)
+        .map_err(|err| format!("failed to resolve bundled {CLI_SIDECAR}: {err}"))?
+        .args(args)
+        .env("DCC_MCP_CLI_AUTO_UPDATE", "false")
+        .env("DCC_MCP_CLI_NO_UPDATE_MAINTENANCE", "true")
+        .output()
+        .await
+        .map_err(|err| format!("failed to run {CLI_SIDECAR}: {err}"))?;
+    if !output.status.success() {
+        return Err(format!(
+            "{CLI_SIDECAR} exited with {:?}: {}",
+            output.status.code(),
+            String::from_utf8_lossy(&output.stderr).trim()
+        ));
+    }
+    Ok(output.stdout)
+}
+
 const MAX_LOG_LINES: usize = 200;
 const READY_TIMEOUT: Duration = Duration::from_secs(15);
 
