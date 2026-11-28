@@ -1,47 +1,48 @@
 {
-  "coreVersion": "0.20.53",
-  "releaseTag": "v0.20.53",
-  "repository": "dcc-mcp/dcc-mcp-core",
   "binaries": [
     {
       "name": "dcc-mcp-server",
+      "repository": "dcc-mcp/dcc-mcp-core",
+      "releaseTag": "v0.22.1",
       "targets": {
         "x86_64-pc-windows-msvc": {
           "asset": "dcc-mcp-server-windows-x86_64.exe",
-          "sha256": "41622ff914e3866c4770c81ef6fd2bd70ee754b2a21b8b63ad124f58d7f05070"
+          "sha256": "98df8ef47af8efc613f6d3ef0359f1b89ac28f8b792ccf299c957348071c365e"
         },
         "aarch64-apple-darwin": {
           "asset": "dcc-mcp-server-macos-universal2",
-          "sha256": "64212ccf23c6b5c7afd11f54b6f7f608fd661ab5bf3bb9399e4638cb2a54c3bf"
+          "sha256": "73537fe196d21dd14e6f2f9ba5a093807dd7e916e083d1f1ecd4108578e46382"
         },
         "x86_64-apple-darwin": {
           "asset": "dcc-mcp-server-macos-universal2",
-          "sha256": "64212ccf23c6b5c7afd11f54b6f7f608fd661ab5bf3bb9399e4638cb2a54c3bf"
+          "sha256": "73537fe196d21dd14e6f2f9ba5a093807dd7e916e083d1f1ecd4108578e46382"
         },
         "x86_64-unknown-linux-gnu": {
           "asset": "dcc-mcp-server-linux-x86_64",
-          "sha256": "7b94470f8645579751b698e18ad073f5a670b72f12c137aac9c9f8d5b98b15cf"
+          "sha256": "f94e9c480db65f758d843c81f270fa28a8710cb9e9373a8990e5f31fa3e92b13"
         }
       }
     },
     {
-      "name": "dcc-mcp-cli",
+      "name": "dccmcp",
+      "repository": "dcc-mcp/dcc-mcp-cli",
+      "releaseTag": "v0.21.3",
       "targets": {
         "x86_64-pc-windows-msvc": {
-          "asset": "dcc-mcp-cli-windows-x86_64.exe",
-          "sha256": "7f63d49d8441ce92ac47c6392861788114774e71ece1f1c7171375cf45548fc3"
+          "asset": "dccmcp-windows-x86_64.exe",
+          "sha256": "799ea11b24517b95eb456813bfec91da60d302f0df549bde849aabb86de3cbfe"
         },
         "aarch64-apple-darwin": {
-          "asset": "dcc-mcp-cli-macos-universal2",
-          "sha256": "6d4282cbc1e76369277ac036003a83cf7113065fe687270202063ce11c9f1844"
+          "asset": "dccmcp-macos-universal2",
+          "sha256": "523e592ce2cf0e6a8364b71ea3cd7260b28ffa2ef419c05d4f026877567ec97e"
         },
         "x86_64-apple-darwin": {
-          "asset": "dcc-mcp-cli-macos-universal2",
-          "sha256": "6d4282cbc1e76369277ac036003a83cf7113065fe687270202063ce11c9f1844"
+          "asset": "dccmcp-macos-universal2",
+          "sha256": "523e592ce2cf0e6a8364b71ea3cd7260b28ffa2ef419c05d4f026877567ec97e"
         },
         "x86_64-unknown-linux-gnu": {
-          "asset": "dcc-mcp-cli-linux-x86_64",
-          "sha256": "67240aa8c8df4be72f027c1e94bfba2cd8bc6c4045c9bfdc6e81809184d6fc6d"
+          "asset": "dccmcp-linux-x86_64",
+          "sha256": "1a532ed4f6e96364d152637219bda64ab73c604eb756d8014e96a388bfff2273"
         }
       }
     }

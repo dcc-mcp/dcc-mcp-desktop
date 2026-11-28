@@ -56,7 +56,7 @@ lint: fmt-check clippy
 
 build: build-frontend check-rust
 
-validate target="x86_64-unknown-linux-gnu": build-frontend lint test check-rust
+validate target="x86_64-unknown-linux-gnu": build-frontend fmt-check (clippy target) test-frontend (test-rust target) check-versions check-rust
 
 desktop-smoke target: install
     just fetch-sidecars {{target}}

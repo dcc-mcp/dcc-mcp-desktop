@@ -114,18 +114,20 @@ pub fn scan_dcc_installations() -> Vec<dcc_bridges::DetectedDcc> {
 }
 
 #[tauri::command]
-pub fn install_dcc_bridge(dcc_id: String) -> Result<(), String> {
-    dcc_bridges::install(&dcc_id)
+pub async fn install_dcc_bridge(app: AppHandle, dcc_id: String) -> Result<(), String> {
+    dcc_bridges::install(&app, &dcc_id).await
 }
 
 #[tauri::command]
-pub fn list_marketplace_sources() -> Vec<marketplace::MarketplaceSource> {
-    marketplace::list_sources()
+pub async fn list_marketplace_sources(
+    app: AppHandle,
+) -> Result<Vec<marketplace::MarketplaceSource>, String> {
+    marketplace::list_sources(&app).await
 }
 
 #[tauri::command]
-pub fn sync_marketplace_source(source_id: String) -> Result<(), String> {
-    marketplace::sync(&source_id)
+pub async fn sync_marketplace_source(app: AppHandle, source_id: String) -> Result<(), String> {
+    marketplace::sync(&app, &source_id).await
 }
 
 #[tauri::command]

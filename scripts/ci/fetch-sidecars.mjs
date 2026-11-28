@@ -19,7 +19,7 @@ for (const binary of config.binaries) {
   if (!descriptor) {
     throw new Error(`no ${binary.name} sidecar configured for ${target}`);
   }
-  const url = `https://github.com/${config.repository}/releases/download/${config.releaseTag}/${descriptor.asset}`;
+  const url = `https://github.com/${binary.repository}/releases/download/${binary.releaseTag}/${descriptor.asset}`;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`failed to download ${url}: HTTP ${response.status}`);

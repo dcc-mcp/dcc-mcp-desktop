@@ -10,13 +10,16 @@ test('external sidecars are declared in the Tauri bundle', async () => {
   const config = JSON.parse(await read('src-tauri/tauri.conf.json'));
   assert.deepEqual(config.bundle.externalBin, [
     'binaries/dcc-mcp-server',
-    'binaries/dcc-mcp-cli',
+    'binaries/dccmcp',
   ]);
 });
 
-test('configured target triples map to the pinned core release', async () => {
+test('configured target triples map to independently pinned releases', async () => {
   const config = JSON.parse(await read('config/sidecars.json'));
-  assert.equal(config.releaseTag, 'v0.20.53');
+  assert.deepEqual(config.binaries.map(b => [b.name, b.repository]), [
+    ['dcc-mcp-server', 'dcc-mcp/dcc-mcp-core'],
+    ['dccmcp', 'dcc-mcp/dcc-mcp-cli'],
+  ]);
   const expected = [
     'x86_64-pc-windows-msvc',
     'aarch64-apple-darwin',
@@ -24,6 +27,7 @@ test('configured target triples map to the pinned core release', async () => {
     'x86_64-unknown-linux-gnu',
   ];
   for (const binary of config.binaries) {
+    assert.match(binary.releaseTag, /^v\d+\.\d+\.\d+$/);
     assert.deepEqual(Object.keys(binary.targets), expected);
     for (const descriptor of Object.values(binary.targets)) {
       assert.match(descriptor.sha256, /^[0-9a-f]{64}$/);

@@ -1,12 +1,12 @@
-export type MarketplaceSourceType = 'local' | 'git' | 'registry';
+export type MarketplaceSourceType = 'builtin' | 'config' | 'env' | 'explicit';
 
 export interface MarketplaceSource {
   id: string;
   name: string;
   source_type: MarketplaceSourceType;
   manifest_path: string;
-  plugin_count: number;
-  has_update: boolean;
+  plugin_count: number | null;
+  has_update: boolean | null;
 }
 
 export interface MarketplaceItem {
