@@ -26,23 +26,23 @@
     {
       "name": "dccmcp",
       "repository": "dcc-mcp/dcc-mcp-cli",
-      "releaseTag": "v0.21.3",
+      "releaseTag": "v0.23.0",
       "targets": {
         "x86_64-pc-windows-msvc": {
           "asset": "dccmcp-windows-x86_64.exe",
-          "sha256": "799ea11b24517b95eb456813bfec91da60d302f0df549bde849aabb86de3cbfe"
+          "sha256": "bd01bc40d64fafda1bc4cb313ea30f45d86706245cc8c322b53b04b2e3d1ce6b"
         },
         "aarch64-apple-darwin": {
           "asset": "dccmcp-macos-universal2",
-          "sha256": "523e592ce2cf0e6a8364b71ea3cd7260b28ffa2ef419c05d4f026877567ec97e"
+          "sha256": "2043d44b84258ed7e2e65cc87ca50de81752f21eb58b9e98e5561ea7debbe541"
         },
         "x86_64-apple-darwin": {
           "asset": "dccmcp-macos-universal2",
-          "sha256": "523e592ce2cf0e6a8364b71ea3cd7260b28ffa2ef419c05d4f026877567ec97e"
+          "sha256": "2043d44b84258ed7e2e65cc87ca50de81752f21eb58b9e98e5561ea7debbe541"
         },
         "x86_64-unknown-linux-gnu": {
           "asset": "dccmcp-linux-x86_64",
-          "sha256": "1a532ed4f6e96364d152637219bda64ab73c604eb756d8014e96a388bfff2273"
+          "sha256": "f91f81a49241c01aa3d0b53e79109c10dc040cfd1e110fac26c5f1d99c3dfd9c"
         }
       }
     }
