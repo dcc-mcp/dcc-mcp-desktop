@@ -18,3 +18,5 @@ Bundle the independently pinned release binaries as Tauri external sidecars. The
 - Desktop releases must be rebuilt when either pinned version changes.
 - A bundled sidecar is never treated as the owner of an unrelated healthy gateway.
 - Signed installer credentials remain a deployment concern and do not change the process contract.
+
+Desktop verifies each downloaded sidecar against its release digest. Native CI starts both programs and checks their versions on each packaging target. An explicit bridge installation uses `dccmcp install --dcc-type <adapter> --execute --json`; scanning installed hosts performs no installation. A versioned scan result forwards its executable path with `--dcc-path`.

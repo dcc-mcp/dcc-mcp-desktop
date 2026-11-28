@@ -60,3 +60,5 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file \
             libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
       - run: vx just desktop-smoke ${{ matrix.platform }}
+      - name: Start both pinned sidecars on the target OS
+        run: vx node scripts/ci/smoke-sidecars.mjs ${{ matrix.platform }}
