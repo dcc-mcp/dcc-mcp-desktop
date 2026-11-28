@@ -55,6 +55,8 @@ jobs:
         shell: bash
       - name: Build Tauri bundles
         run: vx just desktop-bundle ${{ matrix.platform }} ${{ matrix.bundles }}
+      - name: Start both pinned sidecars on the target OS
+        run: vx node scripts/ci/smoke-sidecars.mjs ${{ matrix.platform }}
       - name: Verify bundle outputs
         run: vx just verify-bundle ${{ matrix.validation }} ${{ matrix.platform }}
       - name: Hash release artifacts
