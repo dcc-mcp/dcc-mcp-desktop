@@ -36,6 +36,8 @@ const allowed = new Set([
   'SECURITY.md',
   'CODE_OF_CONDUCT.md',
   'LICENSE',
+  'NOTICE',
+  'TRADEMARKS.md',
   'llms.txt',
   'llms-full.txt',
   'Dockerfile',
