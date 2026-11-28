@@ -32,6 +32,8 @@ The first release is a Tauri v2 desktop shell around the real `dcc-mcp` gateway:
 - Main window, 380 × 540 tray quick panel, routing graph, and live call stream.
 - Windows NSIS/MSI, macOS DMG, and Linux AppImage/DEB release pipelines.
 
+Linux Desktop targets Ubuntu 22.04 x86-64 (glibc 2.35) and compatible newer systems. The bundle pins the Ubuntu 22.04 server and CLI assets from their respective official releases. Native packaging CI starts each executable on Ubuntu 22.04 and checks its version.
+
 The sidecar binaries are downloaded and verified by CI into `src-tauri/binaries/` before every desktop build. Local development can prepare them with the target-specific recipes listed by `vx just --list`.
 
 Supported targets are `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`, `x86_64-apple-darwin`, and `x86_64-unknown-linux-gnu`.
