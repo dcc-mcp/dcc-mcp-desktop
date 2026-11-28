@@ -63,7 +63,9 @@ pub async fn install<R: tauri::Runtime>(
     let adapter = match id.to_ascii_lowercase().as_str() {
         "blender" | "maya" | "unreal" => id.to_ascii_lowercase(),
         "dcc-cua" => {
-            return Err("install the independently released dcc-cua runtime for CUA support".to_string());
+            return Err(
+                "install the independently released dcc-cua runtime for CUA support".to_string(),
+            );
         }
         _ => return Err(format!("unsupported DCC id: {id}")),
     };
