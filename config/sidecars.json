@@ -18,8 +18,8 @@
           "sha256": "73537fe196d21dd14e6f2f9ba5a093807dd7e916e083d1f1ecd4108578e46382"
         },
         "x86_64-unknown-linux-gnu": {
-          "asset": "dcc-mcp-server-linux-x86_64",
-          "sha256": "f94e9c480db65f758d843c81f270fa28a8710cb9e9373a8990e5f31fa3e92b13"
+          "asset": "dcc-mcp-server-linux-x86_64-ubuntu22.04",
+          "sha256": "469cdf76a27de375f259d46739e4fa5d1d849f0cec0a819a6ac8348fbd4f4ee1"
         }
       }
     },
@@ -41,8 +41,8 @@
           "sha256": "2043d44b84258ed7e2e65cc87ca50de81752f21eb58b9e98e5561ea7debbe541"
         },
         "x86_64-unknown-linux-gnu": {
-          "asset": "dccmcp-linux-x86_64",
-          "sha256": "f91f81a49241c01aa3d0b53e79109c10dc040cfd1e110fac26c5f1d99c3dfd9c"
+          "asset": "dccmcp-linux-x86_64-ubuntu22.04",
+          "sha256": "6486c5973854a5d8e6cbd0349b931e65210cee68dcb9a320c7a2c8e845d4ea20"
         }
       }
     }
